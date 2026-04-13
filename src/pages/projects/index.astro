@@ -1,0 +1,41 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const projectYears = ['24-25', '23-24', '22-23'];
+---
+
+<Layout
+  title="Community Arts Projects | Neighbourhood Arts Albert-Eden"
+  description="A yearly archive of community arts projects supported by Neighbourhood Arts in Albert-Eden, Auckland."
+  keywords="community arts projects, Albert-Eden, Auckland, arts initiatives, creative projects, Neighbourhood Arts"
+>
+  <!-- Page Header -->
+  <section class="bg-gray-900 text-white py-20 lg:py-28">
+    <div class="container-custom text-center">
+      <h1 class="text-4xl lg:text-5xl font-bold mb-6">Projects</h1>
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+        Explore the creative projects we've supported across Albert-Eden.
+      </p>
+    </div>
+  </section>
+
+  <!-- Year Selection -->
+  <section class="py-16 lg:py-24">
+    <div class="container-custom">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">Browse by Year</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+          {projectYears.map((year) => (
+            <a
+              href={`/projects/${year}`}
+              class="block bg-white border-2 border-gray-200 rounded-lg p-8 hover:border-primary hover:shadow-lg transition-all"
+            >
+              <span class="text-3xl font-bold text-primary">{year}</span>
+              <p class="text-gray-600 mt-2">View projects</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

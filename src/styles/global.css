@@ -1,0 +1,287 @@
+@import "tailwindcss";
+
+@theme {
+  /* Premium Typography */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Playfair Display', Georgia, serif;
+
+  /* Refined Color Palette - inspired by Mission Estate */
+  --color-primary: #1e3a5f;
+  --color-primary-dark: #152a45;
+  --color-secondary: #c4a35a;
+  --color-accent: #e8b86d;
+  --color-cream: #faf8f5;
+  --color-warm-white: #fefdfb;
+  --color-charcoal: #2d2d2d;
+  --color-slate: #4a5568;
+  --color-light-gray: #f7f7f7;
+}
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-charcoal);
+  line-height: 1.7;
+  background-color: var(--color-warm-white);
+}
+
+/* Typography */
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* Custom utilities */
+.container-custom {
+  @apply max-w-7xl mx-auto px-6 sm:px-8 lg:px-12;
+}
+
+.container-narrow {
+  @apply max-w-4xl mx-auto px-6 sm:px-8;
+}
+
+/* Premium Button Styles */
+.btn-primary {
+  @apply inline-flex items-center justify-center px-8 py-4 text-sm font-medium tracking-wider uppercase;
+  background-color: var(--color-primary);
+  color: white;
+  border: 2px solid var(--color-primary);
+  transition: all 0.3s ease;
+  letter-spacing: 0.1em;
+}
+
+.btn-primary:hover {
+  background-color: transparent;
+  color: var(--color-primary);
+}
+
+.btn-outline {
+  @apply inline-flex items-center justify-center px-8 py-4 text-sm font-medium tracking-wider uppercase;
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
+  transition: all 0.3s ease;
+  letter-spacing: 0.1em;
+}
+
+.btn-outline:hover {
+  background-color: white;
+  color: var(--color-primary);
+}
+
+/* Full-screen Hero */
+.hero-fullscreen {
+  height: 100vh;
+  min-height: 600px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.hero-video-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero-video-container iframe,
+.hero-video-container video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.hero-image-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.35) 0%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  max-width: 900px;
+  padding: 0 2rem;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 300;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.8;
+}
+
+/* Scroll indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  color: white;
+  opacity: 0.8;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+  40% { transform: translateX(-50%) translateY(-10px); }
+  60% { transform: translateX(-50%) translateY(-5px); }
+}
+
+/* Section Styles */
+.section-padding {
+  padding: 6rem 0;
+}
+
+@media (min-width: 1024px) {
+  .section-padding {
+    padding: 8rem 0;
+  }
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--color-charcoal);
+  margin-bottom: 1rem;
+}
+
+.section-subtitle {
+  font-size: 1.125rem;
+  color: var(--color-slate);
+  max-width: 600px;
+}
+
+/* Card Styles */
+.card {
+  background: white;
+  border-radius: 0;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+}
+
+.card-image {
+  aspect-ratio: 16/10;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.card:hover .card-image img {
+  transform: scale(1.05);
+}
+
+/* Navigation */
+.nav-link {
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: color 0.3s ease;
+}
+
+.nav-dropdown {
+  @apply absolute top-full left-0 bg-white shadow-xl py-4 min-w-52 opacity-0 invisible;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.nav-item:hover .nav-dropdown {
+  @apply opacity-100 visible;
+  margin-top: 0;
+}
+
+/* Divider */
+.divider {
+  width: 60px;
+  height: 2px;
+  background-color: var(--color-secondary);
+  margin: 1.5rem 0;
+}
+
+.divider-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Image gallery lightbox */
+.lightbox-backdrop {
+  @apply fixed inset-0 bg-black/95 z-50 flex items-center justify-center;
+  backdrop-filter: blur(10px);
+}
+
+/* Footer */
+.footer-dark {
+  background-color: var(--color-primary-dark);
+  color: white;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.8s ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive text */
+.text-balance {
+  text-wrap: balance;
+}
+

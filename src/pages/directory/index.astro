@@ -1,0 +1,128 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DirectoryCard from '../../components/DirectoryCard.astro';
+import { getCollection } from 'astro:content';
+
+const categories = [
+  { slug: 'all', name: 'All' },
+  { slug: 'artists', name: 'Artists' },
+  { slug: 'musicians', name: 'Musicians' },
+  { slug: 'performers', name: 'Performers' },
+  { slug: 'craft-and-workshops', name: 'Craft and Workshops' },
+  { slug: 'venues', name: 'Venues' }
+];
+
+// Get all directory entries
+const allEntries = await getCollection('directory', ({ data }) => !data.draft);
+---
+
+<Layout
+  title="Arts Directory | Neighbourhood Arts Albert-Eden"
+  description="Discover local artists, musicians, craftspeople, organisations, and venues in Albert-Eden, Auckland. A verified directory by Neighbourhood Arts."
+  keywords="arts directory, visual artists, musicians, craft, organisations, venues, Albert-Eden, Auckland, local artists"
+>
+  <!-- Page Header -->
+  <section class="bg-gray-900 text-white py-20 lg:py-28">
+    <div class="container-custom text-center">
+      <h1 class="text-4xl lg:text-5xl font-bold mb-6">Directory</h1>
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+        Discover the creative people and spaces in our community.
+      </p>
+    </div>
+  </section>
+
+  <!-- Category Filter Tabs -->
+  <nav class="bg-gray-100 py-4" aria-label="Directory categories">
+    <div class="container-custom">
+      <div class="flex flex-wrap justify-center gap-4">
+        {categories.map((cat) => (
+          <button
+            data-category={cat.slug}
+            class={`category-filter px-6 py-2 rounded-full font-medium transition-colors ${
+              cat.slug === 'all'
+                ? 'bg-primary text-white'
+                : 'bg-white text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            {cat.name}
+          </button>
+        ))}
+      </div>
+    </div>
+  </nav>
+
+  <!-- Directory Grid -->
+  <section class="py-16 lg:py-24">
+    <div class="container-custom">
+      {allEntries.length > 0 ? (
+        <div id="directory-grid" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {allEntries.map((entry) => (
+            <div data-entry-category={entry.data.category}>
+              <DirectoryCard
+                name={entry.data.name}
+                category={entry.data.category}
+                thumbnail={entry.data.thumbnail}
+                description={entry.data.description}
+                website={entry.data.website}
+                instagram={entry.data.instagram}
+                facebook={entry.data.facebook}
+              />
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-16">
+          <p class="text-xl text-gray-500">No entries yet in the directory.</p>
+          <p class="text-gray-400 mt-2">Check back soon!</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 lg:py-24 bg-gray-50">
+    <div class="container-custom text-center">
+      <h2 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">Want to be listed?</h2>
+      <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+        If you're an artist, musician, or creative organisation in Albert-Eden and would
+        like to be included in our directory, get in touch.
+      </p>
+      <a
+        href="/about#contact"
+        class="inline-block bg-primary text-white px-8 py-3 rounded-full font-semibold hover:bg-secondary transition-colors"
+      >
+        Contact Us
+      </a>
+    </div>
+  </section>
+
+  <script>
+    // Category filtering
+    const filterButtons = document.querySelectorAll('.category-filter');
+    const entries = document.querySelectorAll('[data-entry-category]');
+
+    filterButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const category = button.getAttribute('data-category');
+
+        // Update active button
+        filterButtons.forEach(btn => {
+          btn.classList.remove('bg-primary', 'text-white');
+          btn.classList.add('bg-white', 'text-gray-700');
+        });
+        button.classList.remove('bg-white', 'text-gray-700');
+        button.classList.add('bg-primary', 'text-white');
+
+        // Filter entries
+        entries.forEach(entry => {
+          const entryCategory = entry.getAttribute('data-entry-category');
+          if (category === 'all' || entryCategory === category) {
+            entry.style.display = 'block';
+          } else {
+            entry.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</Layout>

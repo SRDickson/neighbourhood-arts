@@ -1,0 +1,96 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+const allPress = await getCollection('press', ({ data }) => !data.draft);
+const pressItems = allPress.sort((a, b) =>
+  new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+
+function formatDate(date: Date) {
+  return new Intl.DateTimeFormat('en-NZ', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(date);
+}
+---
+
+<Layout
+  title="Press & Musings | Neighbourhood Arts Albert-Eden"
+  description="News, press coverage, and musings from Neighbourhood Arts in Albert-Eden, Auckland."
+  keywords="Neighbourhood Arts, press, news, media coverage, Albert-Eden, Auckland, community arts news"
+>
+  <!-- Page Header -->
+  <section class="bg-gray-900 text-white py-20 lg:py-28">
+    <div class="container-custom text-center">
+      <h1 class="text-4xl lg:text-5xl font-bold mb-6">Press & Musings</h1>
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+        News, press coverage, and thoughts from Neighbourhood Arts.
+      </p>
+    </div>
+  </section>
+
+  <!-- Press List -->
+  <section class="py-16 lg:py-24">
+    <div class="container-custom">
+      <div class="max-w-3xl mx-auto">
+        {pressItems.length > 0 ? (
+          <div class="space-y-8">
+            {pressItems.map(async (item) => {
+              const { Content } = await render(item);
+              const isExternal = !!item.data.externalUrl;
+
+              return (
+                <article class="bg-white border border-gray-200 rounded-lg p-6 lg:p-8 hover:shadow-lg transition-shadow">
+                  <div class="flex items-center gap-4 mb-4">
+                    <time class="text-sm text-gray-500" datetime={item.data.date.toISOString()}>
+                      {formatDate(item.data.date)}
+                    </time>
+                    {isExternal && (
+                      <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                        External
+                      </span>
+                    )}
+                  </div>
+
+                  {isExternal ? (
+                    <a
+                      href={item.data.externalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="group"
+                    >
+                      <h2 class="text-xl lg:text-2xl font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors">
+                        {item.data.title}
+                        <svg class="inline-block w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                      </h2>
+                      <p class="text-gray-600">{item.data.summary}</p>
+                    </a>
+                  ) : (
+                    <>
+                      <h2 class="text-xl lg:text-2xl font-bold text-gray-900 mb-3">
+                        {item.data.title}
+                      </h2>
+                      <p class="text-gray-600 mb-4">{item.data.summary}</p>
+                      <div class="prose prose-gray max-w-none">
+                        <Content />
+                      </div>
+                    </>
+                  )}
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div class="text-center py-16">
+            <p class="text-xl text-gray-500">No press items yet.</p>
+            <p class="text-gray-400 mt-2">Check back soon for updates.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,52 @@
+---
+interface Props {
+  title: string;
+  year: string;
+  thumbnail: string;
+  summary: string;
+  slug: string;
+  tags?: string[];
+}
+
+const { title, year, thumbnail, summary, slug, tags = [] } = Astro.props;
+---
+
+<article class="card group">
+  <a
+    href={`/projects/${year}/${slug}`}
+    class="block"
+  >
+  <div class="card-image">
+    <img
+      src={thumbnail}
+      alt={title}
+      loading="lazy"
+    />
+  </div>
+  <div class="p-6">
+    <span class="text-xs font-medium text-secondary uppercase tracking-wider">{year}</span>
+    <h3 class="text-xl font-medium mt-2 mb-3 group-hover:text-primary transition-colors" style="font-family: 'Playfair Display', serif;">
+      {title}
+    </h3>
+    <p class="text-slate text-sm leading-relaxed line-clamp-2">{summary}</p>
+    {tags.length > 0 && (
+      <div class="flex flex-wrap gap-2 mt-4">
+        {tags.slice(0, 3).map((tag) => (
+          <span class="text-xs text-slate border border-gray-200 px-2 py-1">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
+  </div>
+  </a>
+</article>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

@@ -1,0 +1,146 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import DirectoryCard from '../../components/DirectoryCard.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const categoryInfo: Record<string, { name: string; description: string; seoDescription: string; keywords: string }> = {
+    'artists': {
+      name: 'Artists',
+      description: 'Painters, sculptors, photographers, and visual creatives in our community.',
+      seoDescription: 'Browse painters, sculptors, ceramicists and more in the Albert-Eden area. A verified directory of local artists by Neighbourhood Arts Auckland.',
+      keywords: 'artists, painters, sculptors, photographers, Albert-Eden, Auckland, local artists, art directory'
+    },
+    'musicians': {
+      name: 'Musicians',
+      description: 'Local musicians, bands, and composers creating original music.',
+      seoDescription: 'Find local musicians and music educators in Albert-Eden, Auckland. Verified listings by Neighbourhood Arts.',
+      keywords: 'musicians, music educators, bands, Albert-Eden, Auckland, local music'
+    },
+    'performers': {
+      name: 'Performers',
+      description: 'Actors, dancers, and performance artists bringing stories to life.',
+      seoDescription: 'Discover local performers, actors, and dancers in Albert-Eden, Auckland. Verified performance artists by Neighbourhood Arts.',
+      keywords: 'performers, actors, dancers, performance artists, Albert-Eden, Auckland'
+    },
+    'craft-and-workshops': {
+      name: 'Craft and Workshops',
+      description: 'Craftspeople, makers, artisans, and workshop facilitators.',
+      seoDescription: 'Discover local craft artists, makers, and workshop facilitators including ceramics, textiles, jewellery and woodwork in Albert-Eden, Auckland.',
+      keywords: 'craft artists, workshops, ceramics, textiles, jewellery, woodwork, Albert-Eden, Auckland, makers'
+    },
+    'venues': {
+      name: 'Venues',
+      description: 'Spaces and venues that host arts events and exhibitions.',
+      seoDescription: 'Find arts venues and community spaces available for exhibitions and performances in Albert-Eden, Auckland.',
+      keywords: 'arts venues, community spaces, galleries, performance spaces, Albert-Eden, Auckland'
+    }
+  };
+
+  const allEntries = await getCollection('directory');
+  const categories = Object.keys(categoryInfo);
+
+  return categories.map(category => ({
+    params: { category },
+    props: {
+      entries: allEntries.filter(entry => entry.data.category === category && !entry.data.draft),
+      info: categoryInfo[category],
+      allCategories: Object.entries(categoryInfo).map(([slug, data]) => ({
+        slug,
+        name: data.name
+      }))
+    }
+  }));
+}
+
+const { category } = Astro.params;
+const { entries, info, allCategories } = Astro.props;
+---
+
+<Layout
+  title={`${info.name} Directory | Neighbourhood Arts Albert-Eden`}
+  description={info.seoDescription}
+  keywords={info.keywords}
+>
+  <!-- Page Header -->
+  <section class="bg-gray-900 text-white py-20 lg:py-28">
+    <div class="container-custom text-center">
+      <a
+        href="/directory"
+        class="inline-flex items-center text-gray-400 hover:text-white mb-4 transition-colors"
+      >
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Back to Directory
+      </a>
+      <h1 class="text-4xl lg:text-5xl font-bold mb-6">{info.name}</h1>
+      <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+        {info.description}
+      </p>
+    </div>
+  </section>
+
+  <!-- Category Navigation -->
+  <nav class="bg-gray-100 py-4" aria-label="Directory categories">
+    <div class="container-custom">
+      <div class="flex flex-wrap justify-center gap-4">
+        {allCategories.map((cat: { slug: string; name: string }) => (
+          <a
+            href={`/directory/${cat.slug}`}
+            class={`px-6 py-2 rounded-full font-medium transition-colors ${
+              cat.slug === category
+                ? 'bg-primary text-white'
+                : 'bg-white text-gray-700 hover:bg-gray-200'
+            }`}
+          >
+            {cat.name}
+          </a>
+        ))}
+      </div>
+    </div>
+  </nav>
+
+  <!-- Directory Grid -->
+  <section class="py-16 lg:py-24">
+    <div class="container-custom">
+      {entries.length > 0 ? (
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          {entries.map((entry: any) => (
+            <DirectoryCard
+              name={entry.data.name}
+              category={entry.data.category}
+              thumbnail={entry.data.thumbnail}
+              description={entry.data.description}
+              website={entry.data.website}
+              instagram={entry.data.instagram}
+              facebook={entry.data.facebook}
+            />
+          ))}
+        </div>
+      ) : (
+        <div class="text-center py-16">
+          <p class="text-xl text-gray-500">No entries yet in this category.</p>
+          <p class="text-gray-400 mt-2">Check back soon or browse another category.</p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="py-16 lg:py-24 bg-gray-50">
+    <div class="container-custom text-center">
+      <h2 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">Want to be listed?</h2>
+      <p class="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+        If you're an artist or creative in Albert-Eden and would
+        like to be included in our directory, get in touch.
+      </p>
+      <a
+        href="/about#contact"
+        class="inline-block bg-primary text-white px-8 py-3 rounded-full font-semibold hover:bg-secondary transition-colors"
+      >
+        Contact Us
+      </a>
+    </div>
+  </section>
+</Layout>

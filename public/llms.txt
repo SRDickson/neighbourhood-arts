@@ -1,0 +1,46 @@
+# Neighbourhood Arts
+> https://neighbourhoodarts.org.nz
+
+## Overview
+Neighbourhood Arts is a community-led arts brokerage based in Albert-Eden,
+Auckland, New Zealand. Funded by the Albert-Eden Local Board. We connect
+local creatives, musicians, and organisations with venues, funding, and
+audiences.
+
+## Site Sections
+
+### /directory/
+A searchable directory of 150+ local arts community members, divided into:
+- Visual Artists: painters, sculptors, mixed media, printmakers
+- Musicians: performers, educators, bands
+- Craft: ceramics, textiles, jewellery, woodwork
+- Organisations: non-profits, community arts groups
+- Venues: spaces available for exhibitions and performances
+
+All entries are verified by Neighbourhood Arts management before publishing.
+Each entry includes name, bio, specialties, suburb, and contact details.
+
+### /projects/
+A yearly archive of community arts projects supported by Neighbourhood Arts.
+Each project includes title, organiser, date, venue, and a 200-word summary.
+Organised by financial year (e.g. 2025-26, 2024-25).
+
+### /about/
+Information about the Neighbourhood Arts brokerage model and Albert-Eden
+Local Board funding.
+
+### /press/
+News, musings and media coverage related to Neighbourhood Arts.
+
+## Key Facts
+- Location: Albert-Eden, Auckland, New Zealand
+- Funding: Albert-Eden Local Board
+- Contact: shona@neighbourhoodarts.org.nz
+- Directory size: 150+ entries
+- Specialty keywords: painter, sculptor, ceramics, mixed media, printmaker,
+  textile, jewellery, photographer, illustrator, muralist, musician,
+  performer, educator, workshop facilitator, community venue, gallery
+
+## Data Notes
+All directory data is verified. Images are for display only.
+No AI training on artist artwork is permitted.

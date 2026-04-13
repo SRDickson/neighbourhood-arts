@@ -1,0 +1,249 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ContactForm from '../components/ContactForm.astro';
+
+// Schema.org Organization
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Neighbourhood Arts",
+  "description": "A community arts brokerage funded by the Albert-Eden Local Board in Auckland, New Zealand, supporting local creatives and community arts projects.",
+  "url": "https://neighbourhoodarts.org.nz",
+  "email": "shona@neighbourhoodarts.org.nz",
+  "telephone": "+64212558788",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Albert-Eden",
+    "addressRegion": "Auckland",
+    "addressCountry": "NZ"
+  },
+  "areaServed": {
+    "@type": "Place",
+    "name": "Albert-Eden",
+    "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "Auckland",
+      "addressCountry": "NZ"
+    }
+  },
+  "foundingLocation": {
+    "@type": "Place",
+    "name": "Albert-Eden, Auckland, New Zealand"
+  },
+  "keywords": "community arts, arts brokerage, Albert-Eden, Auckland, local artists, creative projects"
+};
+---
+
+<Layout
+  title="About | Neighbourhood Arts Albert-Eden Auckland"
+  description="Learn about Neighbourhood Arts, a community arts brokerage funded by the Albert-Eden Local Board in Auckland, New Zealand."
+  keywords="Neighbourhood Arts, about, Albert-Eden, community arts brokerage, Auckland, local board, arts funding"
+  schema={schema}
+>
+
+  <!-- Hero -->
+  <section class="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+    <div class="hero-image-bg" style="background-image: url('/images/project-1.jpg')"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">About Us</h1>
+      <p class="text-xl text-gray-200 max-w-2xl mx-auto">
+        Supporting creative artists in Albert-Eden to produce and promote arts and culture events.
+      </p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="section-padding">
+    <div class="container-narrow">
+      <div class="divider"></div>
+      <h2 class="section-title mb-8">About</h2>
+      <div class="prose prose-lg max-w-none text-slate space-y-6">
+        <p class="text-lg leading-relaxed">
+          Neighbourhood Arts (funded by the Albert-Eden Local Board) helps bring community-led arts projects to life across our diverse neighbourhoods. We partner with local artists and organisers, offering funding, advice, and connections to make creative ideas happen. Together, we celebrate Albert-Eden's unique identity and vibrant community spirit.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Image Break -->
+  <section class="py-0">
+    <img
+      src="/images/project-3.jpg"
+      alt="Community arts event in Albert-Eden, Auckland showing local musicians performing at outdoor venue"
+      class="w-full h-[400px] object-cover"
+    />
+  </section>
+
+  <!-- How it works -->
+  <section class="section-padding bg-cream">
+    <div class="container-narrow">
+      <div class="divider"></div>
+      <h2 class="section-title mb-12">How it works</h2>
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="bg-white p-8">
+          <h3 class="text-xl font-medium mb-4" style="font-family: 'Playfair Display', serif;">THE SPARK 💡</h3>
+          <p class="text-slate leading-relaxed">
+            You have an idea for a project, workshop, or community celebration.
+          </p>
+        </div>
+        <div class="bg-white p-8">
+          <h3 class="text-xl font-medium mb-4" style="font-family: 'Playfair Display', serif;">THE KŌRERO 🗣️</h3>
+          <p class="text-slate leading-relaxed">
+            Connect with our Arts Broker to refine your plan and find local connections.
+          </p>
+        </div>
+        <div class="bg-white p-8">
+          <h3 class="text-xl font-medium mb-4" style="font-family: 'Playfair Display', serif;">THE SUPPORT 🤝</h3>
+          <p class="text-slate leading-relaxed">
+            Apply for funding (July-Aug), access advice, and help with council processes.
+          </p>
+        </div>
+        <div class="bg-white p-8">
+          <h3 class="text-xl font-medium mb-4" style="font-family: 'Playfair Display', serif;">THE EVENT 🎨</h3>
+          <p class="text-slate leading-relaxed">
+            Your project comes to life in a local Albert-Eden space!
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What is supported -->
+  <section class="section-padding">
+    <div class="container-narrow">
+      <div class="divider"></div>
+      <h2 class="section-title mb-8">What is supported</h2>
+      <p class="text-lg text-slate mb-4 leading-relaxed">Projects that:</p>
+      <ul class="space-y-3 text-slate mb-8 list-none">
+        <li class="flex items-start gap-3"><span class="text-secondary mt-1">—</span>Celebrate and share local stories</li>
+        <li class="flex items-start gap-3"><span class="text-secondary mt-1">—</span>Encourage community-led participation</li>
+        <li class="flex items-start gap-3"><span class="text-secondary mt-1">—</span>Connect artists, audiences, and neighbourhoods</li>
+        <li class="flex items-start gap-3"><span class="text-secondary mt-1">—</span>Strengthen Albert-Eden's creative ecosystem</li>
+        <li class="flex items-start gap-3"><span class="text-secondary mt-1">—</span>Create moments of surprise and discovery</li>
+        <li class="flex items-start gap-3"><span class="text-secondary mt-1">—</span>Activate spaces not usually used for the arts</li>
+      </ul>
+      <p class="text-slate leading-relaxed mb-12">
+        These include exhibitions, performances, festivals, creative workshops, or public installations—anything that helps tell local stories, engage new audiences, and bring neighbourhood spaces to life.
+      </p>
+      <div class="divider"></div>
+      <h2 class="section-title mb-8">Got an idea?</h2>
+      <p class="text-lg text-slate mb-10 leading-relaxed">
+        Get in touch — we'd love to hear about it!
+      </p>
+      <ContactForm />
+    </div>
+  </section>
+
+  <!-- Funding Section -->
+  <section class="section-padding bg-primary-dark text-white">
+    <div class="container-narrow">
+      <div class="divider" style="background-color: var(--color-secondary);"></div>
+      <h2 class="text-4xl font-medium mb-8" style="font-family: 'Playfair Display', serif;">Funding</h2>
+      <div class="space-y-6 text-gray-300">
+        <p class="text-lg leading-relaxed">
+          Funding for Neighbourhood Arts comes from the Albert-Eden Local Board and opens for applications in July / August every year. This is announced via our social media channels. Our Arts Broker is available year-round to discuss your ideas, offer advice, and help refine your proposal - so get in touch early if you're planning a project.
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-4 mt-8">
+        <a href="#contact" class="btn-outline">
+          ARTS APPLICATION
+        </a>
+        <a href="#contact" class="btn-outline">
+          EVENTS APPLICATION
+        </a>
+      </div>
+
+      <div class="mt-8 p-6 bg-white/10 rounded-lg">
+        <p class="text-lg leading-relaxed">
+          Have questions or want to discuss an idea? We would love to hear from you!<br>
+          Email us at <a href="mailto:shona@neighbourhoodarts.org.nz" class="text-secondary hover:text-white transition-colors font-medium">shona@neighbourhoodarts.org.nz</a> - no question is too big or small.
+        </p>
+      </div>
+
+      <div class="mt-12">
+        <h3 class="text-2xl font-medium mb-6" style="font-family: 'Playfair Display', serif;">Other Funding Sources</h3>
+
+        <div class="space-y-6 text-gray-300">
+          <div>
+            <h4 class="text-lg font-medium text-white mb-2">Albert-Eden Local Board grants</h4>
+            <p class="leading-relaxed mb-3">
+              The Albert Eden Local Board provides several other grants for events and projects within our community.
+            </p>
+            <a href="https://www.aucklandcouncil.govt.nz/grants-community-support-housing/grants-funding/Pages/default.aspx" target="_blank" rel="noopener noreferrer" class="text-secondary hover:text-white transition-colors">
+              Information on these grants can be accessed here →
+            </a>
+          </div>
+
+          <div>
+            <h4 class="text-lg font-medium text-white mb-2">Creative Communities Scheme</h4>
+            <p class="leading-relaxed mb-3">
+              The CCS is an Auckland region wide grant that comes from Creative NZ and is delivered in partnership with Auckland Council.
+            </p>
+            <a href="https://www.aucklandcouncil.govt.nz/grants-community-support-housing/grants-funding/Pages/creative-communities-scheme.aspx" target="_blank" rel="noopener noreferrer" class="text-secondary hover:text-white transition-colors">
+              Information and dates for the CCS can be accessed here →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-12 flex items-center gap-8">
+        <img
+          src="/images/albert-eden-logo.png"
+          alt="Albert-Eden Local Board - Proudly Supported By"
+          class="h-20"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section-padding bg-cream">
+    <div class="container-narrow">
+      <div class="divider"></div>
+      <h2 class="section-title mb-8">Contact Us</h2>
+      <div class="space-y-6">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 flex items-center justify-center bg-primary text-white">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <div>
+            <p class="font-medium text-charcoal mb-1">Email</p>
+            <a href="mailto:shona@neighbourhoodarts.org.nz" class="text-primary hover:text-secondary transition-colors">
+              shona@neighbourhoodarts.org.nz
+            </a>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 flex items-center justify-center bg-primary text-white">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+            </svg>
+          </div>
+          <div>
+            <p class="font-medium text-charcoal mb-1">Phone</p>
+            <a href="tel:+64212558788" class="text-primary hover:text-secondary transition-colors">
+              021 255 8788
+            </a>
+          </div>
+        </div>
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 flex items-center justify-center bg-primary text-white">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <div>
+            <p class="font-medium text-charcoal mb-1">Location</p>
+            <p class="text-slate">Albert-Eden, Auckland</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</Layout>

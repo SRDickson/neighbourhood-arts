@@ -1,0 +1,163 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allProjects = await getCollection('projects');
+  return allProjects.map((project) => ({
+    params: {
+      year: project.data.year,
+      slug: project.id
+    },
+    props: { project }
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+// Schema.org CreativeWork
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": project.data.title,
+  "description": project.data.summary,
+  "image": project.data.thumbnail,
+  "dateCreated": project.data.year,
+  "locationCreated": {
+    "@type": "Place",
+    "name": "Albert-Eden, Auckland, New Zealand"
+  },
+  "creator": {
+    "@type": "Organization",
+    "name": "Neighbourhood Arts"
+  },
+  "keywords": project.data.tags ? project.data.tags.join(', ') : ''
+};
+---
+
+<Layout
+  title={project.data.title}
+  description={project.data.summary}
+  keywords={project.data.tags ? project.data.tags.join(', ') + ', Albert-Eden, Auckland, community arts' : 'Albert-Eden, Auckland, community arts'}
+  schema={schema}
+>
+  <!-- Page Header -->
+  <section class="bg-gray-900 text-white py-20 lg:py-28">
+    <div class="container-custom">
+      <div class="max-w-3xl">
+        <a
+          href={`/projects/${project.data.year}`}
+          class="inline-flex items-center text-gray-400 hover:text-white mb-4 transition-colors"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to {project.data.year} Projects
+        </a>
+        <h1 class="text-4xl lg:text-5xl font-bold mb-4">{project.data.title}</h1>
+        <p class="text-xl text-gray-300">{project.data.summary}</p>
+        {project.data.tags && project.data.tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mt-6">
+            {project.data.tags.map((tag) => (
+              <span class="bg-white/10 text-white px-3 py-1 rounded-full text-sm">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="py-16 lg:py-24">
+    <div class="container-custom">
+      <div class="grid lg:grid-cols-3 gap-12">
+        <!-- Main Image -->
+        <div class="lg:col-span-2">
+          <img
+            src={project.data.thumbnail}
+            alt={project.data.title}
+            class="w-full rounded-lg shadow-lg mb-8"
+          />
+
+          <!-- Project Description -->
+          <div class="prose prose-lg max-w-none">
+            <Content />
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="lg:col-span-1">
+          <div class="bg-gray-50 rounded-lg p-6 sticky top-24">
+            <h3 class="font-semibold text-gray-900 mb-4">Project Details</h3>
+            <dl class="space-y-4">
+              <div>
+                <dt class="text-sm text-gray-500">Year</dt>
+                <dd class="font-medium text-gray-900">{project.data.year}</dd>
+              </div>
+              {project.data.tags && project.data.tags.length > 0 && (
+                <div>
+                  <dt class="text-sm text-gray-500 mb-2">Categories</dt>
+                  <dd class="flex flex-wrap gap-2">
+                    {project.data.tags.map((tag) => (
+                      <span class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm">
+                        {tag}
+                      </span>
+                    ))}
+                  </dd>
+                </div>
+              )}
+            </dl>
+          </div>
+
+          <!-- Additional Images -->
+          {project.data.images && project.data.images.length > 0 && (
+            <div class="mt-8">
+              <h3 class="font-semibold text-gray-900 mb-4">Gallery</h3>
+              <div class="grid grid-cols-2 gap-4">
+                {project.data.images.map((image, index) => (
+                  <button
+                    class="aspect-square overflow-hidden rounded-lg cursor-pointer"
+                    data-lightbox={image}
+                  >
+                    <img
+                      src={image}
+                      alt={`${project.data.title} image ${index + 1}`}
+                      class="w-full h-full object-cover hover:scale-105 transition-transform"
+                      loading="lazy"
+                    />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<!-- Lightbox Script -->
+<script>
+  const lightboxButtons = document.querySelectorAll('[data-lightbox]');
+
+  lightboxButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const imageUrl = button.getAttribute('data-lightbox');
+      const lightbox = document.createElement('div');
+      lightbox.className = 'lightbox-backdrop';
+      lightbox.innerHTML = `
+        <button class="absolute top-4 right-4 text-white hover:text-gray-300">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <img src="${imageUrl}" alt="" class="max-w-[90vw] max-h-[90vh] object-contain" />
+      `;
+      lightbox.addEventListener('click', () => lightbox.remove());
+      document.body.appendChild(lightbox);
+    });
+  });
+</script>

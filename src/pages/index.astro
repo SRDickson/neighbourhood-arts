@@ -1,0 +1,261 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+// Get latest projects
+const allProjects = await getCollection('projects', ({ data }) => !data.draft);
+const latestProjects = allProjects
+  .sort((a, b) => b.data.year.localeCompare(a.data.year))
+  .slice(0, 6);
+
+// Schema.org WebSite with SearchAction
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Neighbourhood Arts",
+  "description": "Neighbourhood Arts (funded by the Albert-Eden Local Board) helps bring community-led arts projects to life across our diverse neighbourhoods in Auckland.",
+  "url": "https://neighbourhoodarts.org.nz",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://neighbourhoodarts.org.nz/directory?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Albert-Eden",
+    "addressRegion": "Auckland",
+    "addressCountry": "NZ"
+  }
+};
+---
+
+<Layout
+  title="Neighbourhood Arts | Albert-Eden Community Arts Auckland"
+  description="Neighbourhood Arts (funded by the Albert-Eden Local Board) helps bring community-led arts projects to life across our diverse neighbourhoods in Auckland."
+  keywords="neighbourhood arts, Albert-Eden, Auckland, community arts, local artists, musicians, visual artists, craft, art directory, community projects, Mt Albert, Sandringham, Kingsland, Albert-Eden Local Board"
+  transparentHeader={true}
+  schema={schema}
+>
+
+  <!-- Full-Screen Hero with Video Background -->
+  <section class="hero-fullscreen">
+    <!-- Video Background -->
+    <div class="hero-video-container">
+      <video autoplay muted loop playsinline>
+        <source src="/hero.mp4" type="video/mp4" />
+      </video>
+    </div>
+
+    <!-- Overlay -->
+    <div class="hero-overlay"></div>
+
+    <!-- Content -->
+    <div class="hero-content">
+      <h1 class="hero-title sr-only">Neighbourhood Arts</h1>
+      <p class="hero-subtitle text-2xl lg:text-3xl font-medium mb-8">
+        Building a vibrant, creative Albert-Eden - together.
+      </p>
+      <p class="text-lg lg:text-xl text-gray-200 mb-8">
+        Where creativity meets community - discover our projects.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/projects/24-25" class="btn-outline" aria-label="Explore community arts projects in Albert-Eden">
+          Explore Projects
+        </a>
+        <a href="/about" class="btn-outline" aria-label="Learn more about Neighbourhood Arts and our community brokerage approach">
+          Learn More
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      </svg>
+    </div>
+  </section>
+
+  <!-- Introduction Section -->
+  <section class="section-padding bg-cream">
+    <div class="container-narrow text-center">
+      <div class="divider divider-center"></div>
+      <h2 class="section-title mb-6">Who We Are</h2>
+      <p class="text-lg text-slate leading-relaxed max-w-2xl mx-auto">
+        We partner with local artists and organisers, offering funding, advice, and connections
+        to make creative ideas happen. Together, we celebrate Albert-Eden's unique identity
+        and vibrant community spirit.
+      </p>
+      <a
+        href="/about"
+        class="inline-flex items-center gap-2 mt-8 text-primary font-medium hover:gap-3 transition-all"
+        aria-label="Learn more about Neighbourhood Arts approach to community arts"
+      >
+        Learn more about our approach
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- Featured Projects -->
+  <section class="section-padding">
+    <div class="container-custom">
+      <div class="text-center mb-16">
+        <div class="divider divider-center"></div>
+        <h2 class="section-title">Our Projects</h2>
+        <p class="section-subtitle mx-auto mt-4">
+          Discover the creative projects we've supported across Albert-Eden
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Project Card 1 -->
+        <a href="/projects/24-25" class="card group">
+          <div class="card-image">
+            <img src="/images/project-1.jpg" alt="Community Mural Project - collaborative street art in Mt Albert" loading="lazy" />
+          </div>
+          <div class="p-6">
+            <span class="text-xs font-medium text-secondary uppercase tracking-wider">2024-25</span>
+            <h3 class="text-xl font-medium mt-2 mb-3 group-hover:text-primary transition-colors" style="font-family: 'Playfair Display', serif;">
+              Community Mural Project
+            </h3>
+            <p class="text-slate text-sm">
+              A collaborative mural bringing together local artists and community members.
+            </p>
+          </div>
+        </a>
+
+        <!-- Project Card 2 -->
+        <a href="/projects/24-25" class="card group">
+          <div class="card-image">
+            <img src="/images/project-3.jpg" alt="Sandringham Sounds - local musicians performing at outdoor community concert" loading="lazy" />
+          </div>
+          <div class="p-6">
+            <span class="text-xs font-medium text-secondary uppercase tracking-wider">2024-25</span>
+            <h3 class="text-xl font-medium mt-2 mb-3 group-hover:text-primary transition-colors" style="font-family: 'Playfair Display', serif;">
+              Sandringham Sounds
+            </h3>
+            <p class="text-slate text-sm">
+              Free outdoor concerts showcasing local musicians in community parks.
+            </p>
+          </div>
+        </a>
+
+        <!-- Project Card 3 -->
+        <a href="/projects/25-26" class="card group">
+          <div class="card-image">
+            <img src="/images/project-4.jpg" alt="Youth Art Workshops - young people creating art in community space" loading="lazy" />
+          </div>
+          <div class="p-6">
+            <span class="text-xs font-medium text-secondary uppercase tracking-wider">2025-26</span>
+            <h3 class="text-xl font-medium mt-2 mb-3 group-hover:text-primary transition-colors" style="font-family: 'Playfair Display', serif;">
+              Youth Art Workshops
+            </h3>
+            <p class="text-slate text-sm">
+              Free creative workshops for young people exploring different mediums.
+            </p>
+          </div>
+        </a>
+      </div>
+
+      <div class="text-center mt-12">
+        <a href="/projects/25-26" class="btn-primary">
+          View All Projects
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Where We Work -->
+  <section class="section-padding bg-primary-dark text-white">
+    <div class="container-custom">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div>
+          <div class="divider" style="background-color: var(--color-secondary);"></div>
+          <h2 class="text-4xl lg:text-5xl font-medium mb-6" style="font-family: 'Playfair Display', serif;">
+            Where We Work
+          </h2>
+          <p class="text-lg text-gray-300 mb-8 leading-relaxed">
+            We operate across the Albert-Eden area, bringing arts and culture to local
+            communities. Our projects take place in community halls, parks, schools,
+            and public spaces.
+          </p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 bg-secondary rounded-full"></div>
+              <span class="text-gray-200">Mt Albert</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 bg-secondary rounded-full"></div>
+              <span class="text-gray-200">Sandringham</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 bg-secondary rounded-full"></div>
+              <span class="text-gray-200">Kingsland</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 bg-secondary rounded-full"></div>
+              <span class="text-gray-200">Pt Chevalier</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 bg-secondary rounded-full"></div>
+              <span class="text-gray-200">Morningside</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 bg-secondary rounded-full"></div>
+              <span class="text-gray-200">Eden Terrace</span>
+            </div>
+          </div>
+        </div>
+        <div class="relative">
+          <img
+            src="/images/project-2.jpg"
+            alt="Community gathering at arts event in Albert-Eden, Auckland showing diverse group enjoying local creative project"
+            class="w-full aspect-[4/3] object-cover"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-primary-dark/50 to-transparent"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Connect Section -->
+  <section class="section-padding bg-cream">
+    <div class="container-narrow text-center">
+      <div class="divider divider-center"></div>
+      <h2 class="section-title mb-6">Get Involved</h2>
+      <p class="text-lg text-slate leading-relaxed max-w-2xl mx-auto mb-10">
+        Whether you're an artist looking for support, a venue wanting to host events,
+        or a community member interested in the arts – we'd love to hear from you.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/directory" class="btn-primary">
+          Browse Directory
+        </a>
+        <a href="/about#contact" class="btn-primary" style="background: transparent; color: var(--color-primary);">
+          Contact Us
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Supported By -->
+  <section class="py-16 bg-white">
+    <div class="container-custom">
+      <div class="text-center">
+        <p class="text-sm text-slate uppercase tracking-wider mb-6">Proudly supported by</p>
+        <img
+          src="/images/albert-eden-logo.png"
+          alt="Albert-Eden Local Board - Proudly Supported By"
+          class="h-20 mx-auto"
+        />
+      </div>
+    </div>
+  </section>
+
+</Layout>

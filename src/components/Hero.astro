@@ -1,0 +1,71 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  videoUrl?: string;
+  imageUrl?: string;
+  showCta?: boolean;
+  ctaText?: string;
+  ctaLink?: string;
+}
+
+const {
+  title,
+  subtitle,
+  videoUrl,
+  imageUrl = '/images/hero-placeholder.jpg',
+  showCta = false,
+  ctaText = 'Learn More',
+  ctaLink = '/about'
+} = Astro.props;
+---
+
+<section class="relative h-[70vh] min-h-[500px] max-h-[800px] flex items-center justify-center overflow-hidden">
+  <!-- Background Video or Image -->
+  {videoUrl ? (
+    <video
+      autoplay
+      muted
+      loop
+      playsinline
+      class="absolute inset-0 w-full h-full object-cover"
+    >
+      <source src={videoUrl} type="video/mp4" />
+    </video>
+  ) : (
+    <div
+      class="absolute inset-0 bg-cover bg-center"
+      style={`background-image: url('${imageUrl}')`}
+    />
+  )}
+
+  <!-- Overlay -->
+  <div class="hero-overlay absolute inset-0"></div>
+
+  <!-- Content -->
+  <div class="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
+    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+      {title}
+    </h1>
+    {subtitle && (
+      <p class="text-lg md:text-xl lg:text-2xl mb-8 text-gray-200 max-w-2xl mx-auto">
+        {subtitle}
+      </p>
+    )}
+    {showCta && (
+      <a
+        href={ctaLink}
+        class="inline-block bg-white text-primary px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-colors"
+      >
+        {ctaText}
+      </a>
+    )}
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+    </svg>
+  </div>
+</section>

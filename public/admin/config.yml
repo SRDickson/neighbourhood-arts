@@ -1,0 +1,65 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# For local development, uncomment below and comment out git-gateway above
+# backend:
+#   name: test-repo
+
+media_folder: "public/images"
+public_folder: "/images"
+
+collections:
+  # Projects Collection
+  - name: "projects"
+    label: "Projects"
+    folder: "src/content/projects"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Year", name: "year", widget: "select", options: ["25-26", "24-25", "23-24", "22-23"] }
+      - { label: "Thumbnail Image", name: "thumbnail", widget: "image" }
+      - { label: "Summary", name: "summary", widget: "text", hint: "A short 1-2 sentence description" }
+      - { label: "Gallery Images", name: "images", widget: "list", field: { label: "Image", name: "image", widget: "image" }, required: false }
+      - { label: "Tags", name: "tags", widget: "list", required: false, hint: "e.g. visual art, music, youth, schools" }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false, required: false }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  # Directory Collection
+  - name: "directory"
+    label: "Directory"
+    folder: "src/content/directory"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Name", name: "name", widget: "string" }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Visual Artists", value: "visual-artists" }
+          - { label: "Musicians", value: "musicians" }
+          - { label: "Craft", value: "craft" }
+          - { label: "Organisations", value: "organisations" }
+          - { label: "Venues", value: "venues" }
+      - { label: "Thumbnail/Photo", name: "thumbnail", widget: "image", required: false }
+      - { label: "Short Description", name: "description", widget: "text", hint: "One sentence about this artist/organisation" }
+      - { label: "Website", name: "website", widget: "string", required: false }
+      - { label: "Instagram URL", name: "instagram", widget: "string", required: false }
+      - { label: "Facebook URL", name: "facebook", widget: "string", required: false }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false, required: false }
+
+  # Press/Musings Collection
+  - name: "press"
+    label: "Press & Musings"
+    folder: "src/content/press"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Summary", name: "summary", widget: "text", hint: "A short excerpt or summary" }
+      - { label: "External URL", name: "externalUrl", widget: "string", required: false, hint: "If this links to external press coverage, add the URL here" }
+      - { label: "Draft", name: "draft", widget: "boolean", default: false, required: false }
+      - { label: "Body", name: "body", widget: "markdown", required: false, hint: "Only needed for internal articles (not external links)" }

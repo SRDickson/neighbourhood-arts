@@ -1,0 +1,16 @@
+User-agent: *
+
+# Allow full site crawling and summarisation
+Allow: /
+Allow: /directory/
+Allow: /projects/
+Allow: /about/
+Allow: /press/
+
+# Allow AI agents to read and summarise artist bios and project descriptions
+# to help people find local creatives in Albert-Eden, Auckland
+
+# Do NOT use original artwork images for AI model training
+Disallow: /images/artwork/
+
+Crawl-delay: 1

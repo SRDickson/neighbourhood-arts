@@ -1,0 +1,97 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  transparentHeader?: boolean;
+  keywords?: string;
+  schema?: object;
+}
+
+const {
+  title,
+  description = 'Neighbourhood Arts - Supporting creative artists in Albert-Eden, Auckland',
+  image = '/images/hero-bg.jpg',
+  transparentHeader = false,
+  keywords = 'neighbourhood arts, Albert-Eden, Auckland, community arts, local artists, creative projects, art directory',
+  schema
+} = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- SEO -->
+    <title>{title} | Neighbourhood Arts</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:title" content={`${title} | Neighbourhood Arts`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} | Neighbourhood Arts`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+
+    <!-- Premium Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Schema.org JSON-LD -->
+    {schema && (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    )}
+
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <Header transparent={transparentHeader} />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+
+    <style>
+      @keyframes page-in {
+        from { opacity: 0; transform: translateY(18px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      main {
+        animation: page-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+    </style>
+
+    <script>
+      document.addEventListener('click', function (e) {
+        var el = e.target;
+        while (el && el.tagName !== 'A') el = el.parentElement;
+        if (!el) return;
+        var href = el.getAttribute('href');
+        if (!href || href.charAt(0) === '#' || href.indexOf('http') === 0 || href.indexOf('mailto') === 0 || href.indexOf('tel') === 0 || el.target === '_blank') return;
+        e.preventDefault();
+        var main = document.querySelector('main');
+        main.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        main.style.opacity = '0';
+        main.style.transform = 'translateY(-12px)';
+        setTimeout(function () { window.location.href = href; }, 320);
+      });
+    </script>
+  </body>
+</html>
