@@ -5,7 +5,7 @@ import https from 'https';
 const SHEET_ID = '1GCxIxZA7vUlk4WgdFAM1NEJhLjUKly6cdHJoapRzhxw';
 
 const SHEETS = {
-  'Visual Artist': 'artists',
+  'Visual Artists': 'artists',
   'Musician': 'musicians',
   'Performer': 'performers',
   'Crafts': 'craft-and-workshops',
