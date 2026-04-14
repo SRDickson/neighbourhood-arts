@@ -109,6 +109,12 @@ ${entry.Bio || ''}
 async function syncDirectory() {
   console.log('🔄 Starting directory sync...\n');
 
+  // Create directory if it doesn't exist
+  if (!fs.existsSync(CONTENT_DIR)) {
+    fs.mkdirSync(CONTENT_DIR, { recursive: true });
+    console.log('📁 Created content directory\n');
+  }
+
   // Clear existing directory files
   const files = fs.readdirSync(CONTENT_DIR);
   files.forEach(file => {
