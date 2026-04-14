@@ -18,12 +18,16 @@ const directory = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/directory" }),
   schema: z.object({
     name: z.string(),
-    category: z.enum(['visual-artists', 'musicians', 'craft', 'organisations', 'venues']),
+    category: z.enum(['artists', 'musicians', 'performers', 'craft-and-workshops', 'venues']),
     thumbnail: z.string().optional(),
     description: z.string(),
+    email: z.string().optional(),
     website: z.string().optional(),
     instagram: z.string().optional(),
     facebook: z.string().optional(),
+    specialties: z.array(z.string()).optional(),
+    altText: z.string().optional(),
+    verified: z.boolean().optional().default(false),
     draft: z.boolean().optional().default(false),
   }),
 });

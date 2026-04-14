@@ -6,7 +6,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "sync": "node sync-directory.js",
+    "sync-and-build": "node sync-directory.js && astro build",
+    "deploy": "npm run sync-and-build && netlify deploy --prod"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
@@ -16,6 +19,7 @@
     "tailwindcss": "^4.2.0"
   },
   "devDependencies": {
-    "lighthouse": "^13.0.3"
+    "lighthouse": "^13.0.3",
+    "netlify-cli": "^24.11.2"
   }
 }
