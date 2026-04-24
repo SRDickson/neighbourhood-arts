@@ -57,6 +57,22 @@ function parseCSV(csv) {
   return rows;
 }
 
+function convertDriveUrl(url) {
+  if (!url) return '';
+  const match = url.match(/[?&]id=([^&]+)/);
+  if (match) return `https://lh3.googleusercontent.com/d/${match[1]}`;
+  return url;
+}
+
+function categoryFromSpecialties(specialties) {
+  const s = specialties.toLowerCase();
+  if (s.includes('venue')) return 'venues';
+  if (s.includes('music') || s.includes('musician') || s.includes('singer') || s.includes('band')) return 'musicians';
+  if (s.includes('perform') || s.includes('theatre') || s.includes('theater') || s.includes('dance')) return 'performers';
+  if (s.includes('craft') || s.includes('workshop') || s.includes('maker') || s.includes('textile')) return 'craft-and-workshops';
+  return 'artists';
+}
+
 function createSlug(name) {
   return name
     .toLowerCase()
@@ -78,14 +94,15 @@ function createMarkdownFile(entry) {
   const specialties = entry['Specialties']
     ? entry['Specialties'].split(',').map(s => s.trim()).filter(Boolean)
     : [];
+  const category = categoryFromSpecialties(entry['Specialties'] || '');
 
   const bio = (entry['Bio'] || '').replace(/"/g, '\\"');
-  const thumbnail = entry['DirectPhotoURL'] || '/images/placeholder-profile.jpg';
+  const thumbnail = convertDriveUrl(entry['DirectPhotoURL']?.trim()) || '/images/placeholder-profile.jpg';
   const social = entry['Instagram / Facebook'] || '';
 
   const markdown = `---
 name: "${name.replace(/"/g, '\\"')}"
-category: "artists"
+category: "${category}"
 description: "${bio}"
 email: "${entry['Email Address'] || ''}"
 website: "${entry['Website'] || ''}"
