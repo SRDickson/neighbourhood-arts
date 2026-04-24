@@ -17,9 +17,5 @@
     "astro": "^5.17.1",
     "lightningcss": "^1.31.1",
     "tailwindcss": "^4.2.0"
-  },
-  "devDependencies": {
-    "lighthouse": "^13.0.3",
-    "netlify-cli": "^24.11.2"
   }
 }
