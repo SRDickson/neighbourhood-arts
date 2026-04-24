@@ -2,24 +2,16 @@ import fs from 'fs';
 import path from 'path';
 import https from 'https';
 
-const SHEET_ID = '1GCxIxZA7vUlk4WgdFAM1NEJhLjUKly6cdHJoapRzhxw';
-
-const SHEETS = {
-  'Visual Artists': 'artists',
-  'Musician': 'musicians',
-  'Performer': 'performers',
-  'Crafts': 'craft-and-workshops',
-  'Venue': 'venues'
-};
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRNVmW6hjAspHGHbwFUCZEvz6bwoDva46Alf7lsqj7hgOeoX4qXREP7rRangm6nnrR7om2sFD-2P5Ei/pub?gid=1814063400&single=true&output=csv';
 
 const CONTENT_DIR = './src/content/directory';
 
-// Function to fetch CSV data from Google Sheets
-function fetchSheetData(sheetName) {
+function fetchCSV(url) {
   return new Promise((resolve, reject) => {
-    const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
-
     https.get(url, (res) => {
+      if ([301, 302, 307, 308].includes(res.statusCode)) {
+        return fetchCSV(res.headers.location).then(resolve).catch(reject);
+      }
       let data = '';
       res.on('data', (chunk) => data += chunk);
       res.on('end', () => resolve(data));
@@ -27,34 +19,36 @@ function fetchSheetData(sheetName) {
   });
 }
 
-// Function to parse CSV
+function splitCSVLine(line) {
+  const values = [];
+  let current = '';
+  let inQuotes = false;
+  for (const char of line) {
+    if (char === '"') {
+      inQuotes = !inQuotes;
+    } else if (char === ',' && !inQuotes) {
+      values.push(current.replace(/^"|"$/g, '').trim());
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+  values.push(current.replace(/^"|"$/g, '').trim());
+  return values;
+}
+
 function parseCSV(csv) {
   const lines = csv.split('\n');
-  const headers = lines[0].split(',').map(h => h.replace(/"/g, '').trim());
+  const headers = splitCSVLine(lines[0]);
   const rows = [];
 
   for (let i = 1; i < lines.length; i++) {
     if (!lines[i].trim()) continue;
 
-    const values = [];
-    let current = '';
-    let inQuotes = false;
-
-    for (let char of lines[i]) {
-      if (char === '"') {
-        inQuotes = !inQuotes;
-      } else if (char === ',' && !inQuotes) {
-        values.push(current.trim());
-        current = '';
-      } else {
-        current += char;
-      }
-    }
-    values.push(current.trim());
-
+    const values = splitCSVLine(lines[i]);
     const row = {};
     headers.forEach((header, index) => {
-      row[header] = values[index] ? values[index].replace(/^"|"$/g, '') : '';
+      row[header] = values[index] || '';
     });
 
     rows.push(row);
@@ -63,7 +57,6 @@ function parseCSV(csv) {
   return rows;
 }
 
-// Function to create slug from name
 function createSlug(name) {
   return name
     .toLowerCase()
@@ -71,83 +64,73 @@ function createSlug(name) {
     .replace(/^-+|-+$/g, '');
 }
 
-// Function to create markdown file
-function createMarkdownFile(entry, category) {
-  const slug = createSlug(entry.Name);
-  const verified = entry.Verified?.toLowerCase() === 'yes';
+function createMarkdownFile(entry) {
+  const name = entry['Name']?.trim();
+  if (!name) return;
 
-  // Skip if not verified
-  if (!verified) {
-    console.log(`⏭️  Skipping ${entry.Name} (not verified)`);
+  const approved = entry['Approved']?.toUpperCase() === 'Y';
+  if (!approved) {
+    console.log(`⏭️  Skipping ${name} (not approved)`);
     return;
   }
 
+  const slug = createSlug(name);
+  const specialties = entry['Specialties']
+    ? entry['Specialties'].split(',').map(s => s.trim()).filter(Boolean)
+    : [];
+
+  const bio = (entry['Bio'] || '').replace(/"/g, '\\"');
+  const thumbnail = entry['DirectPhotoURL'] || '/images/placeholder-profile.jpg';
+  const social = entry['Instagram / Facebook'] || '';
+
   const markdown = `---
-name: "${entry.Name}"
-category: "${category}"
-description: "${entry.Bio || ''}"
-email: "${entry.Email || ''}"
-website: "${entry.Website || ''}"
-instagram: "${entry.Instagram || ''}"
-facebook: "${entry.Facebook || ''}"
-specialties: ${entry.Specialties ? `["${entry.Specialties.split(',').map(s => s.trim()).join('", "')}"]` : '[]'}
-thumbnail: "${entry.Photo_URL || '/images/placeholder-profile.jpg'}"
-altText: "${entry.Alt_Text || entry.Name}"
-verified: ${verified}
+name: "${name.replace(/"/g, '\\"')}"
+category: "artists"
+description: "${bio}"
+email: "${entry['Email Address'] || ''}"
+website: "${entry['Website'] || ''}"
+instagram: "${social}"
+specialties: ${JSON.stringify(specialties)}
+thumbnail: "${thumbnail}"
+altText: "${name.replace(/"/g, '\\"')}"
+verified: true
 draft: false
 ---
 
-${entry.Bio || ''}
+${entry['Bio'] || ''}
 `;
 
   const filePath = path.join(CONTENT_DIR, `${slug}.md`);
   fs.writeFileSync(filePath, markdown);
-  console.log(`✅ Created: ${entry.Name} → ${slug}.md`);
+  console.log(`✅ Created: ${name} → ${slug}.md`);
 }
 
-// Main sync function
 async function syncDirectory() {
   console.log('🔄 Starting directory sync...\n');
 
-  // Create directory if it doesn't exist
   if (!fs.existsSync(CONTENT_DIR)) {
     fs.mkdirSync(CONTENT_DIR, { recursive: true });
     console.log('📁 Created content directory\n');
   }
 
-  // Clear existing directory files
   const files = fs.readdirSync(CONTENT_DIR);
   files.forEach(file => {
-    if (file.endsWith('.md')) {
-      fs.unlinkSync(path.join(CONTENT_DIR, file));
-    }
+    if (file.endsWith('.md')) fs.unlinkSync(path.join(CONTENT_DIR, file));
   });
   console.log('🗑️  Cleared old directory files\n');
 
-  // Fetch and process each sheet
-  for (const [sheetName, category] of Object.entries(SHEETS)) {
-    console.log(`📥 Fetching ${sheetName}...`);
+  console.log('📥 Fetching mastersheet...');
 
-    try {
-      const csvData = await fetchSheetData(sheetName);
-      const entries = parseCSV(csvData);
-
-      console.log(`   Found ${entries.length} entries`);
-
-      entries.forEach(entry => {
-        if (entry.Name && entry.Name.trim()) {
-          createMarkdownFile(entry, category);
-        }
-      });
-
-      console.log('');
-    } catch (error) {
-      console.error(`❌ Error fetching ${sheetName}:`, error.message);
-    }
+  try {
+    const csvData = await fetchCSV(CSV_URL);
+    const entries = parseCSV(csvData);
+    console.log(`   Found ${entries.length} entries\n`);
+    entries.forEach(entry => createMarkdownFile(entry));
+  } catch (error) {
+    console.error('❌ Error fetching sheet:', error.message);
   }
 
-  console.log('✨ Directory sync complete!\n');
+  console.log('\n✨ Directory sync complete!\n');
 }
 
-// Run sync
 syncDirectory().catch(console.error);
