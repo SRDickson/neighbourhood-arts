@@ -57,7 +57,7 @@ const allEntries = await getCollection('directory', ({ data }) => !data.draft);
       {allEntries.length > 0 ? (
         <div id="directory-grid" class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {allEntries.map((entry) => (
-            <div data-entry-category={entry.data.category}>
+            <div data-entry-category={entry.data.category} class="flex flex-col">
               <DirectoryCard
                 name={entry.data.name}
                 category={entry.data.category}
