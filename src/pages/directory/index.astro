@@ -22,10 +22,12 @@ const allEntries = await getCollection('directory', ({ data }) => !data.draft);
   keywords="arts directory, visual artists, musicians, craft, organisations, venues, Albert-Eden, Auckland, local artists"
 >
   <!-- Page Header -->
-  <section class="bg-gray-900 text-white py-20 lg:py-28">
-    <div class="container-custom text-center">
+  <section class="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+    <div class="hero-image-bg" style="background-image: url('/images/Directory_banner.jpg')"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
       <h1 class="text-4xl lg:text-5xl font-bold mb-6">Directory</h1>
-      <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+      <p class="text-xl text-gray-200 max-w-2xl mx-auto">
         Discover the creative people and spaces in our community.
       </p>
     </div>

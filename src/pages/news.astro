@@ -1,0 +1,214 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const SHEET_ID = '153Ufwyhkq5sOXFOVqFV1DRHitNtPsvJu6CiYvIRsXMk';
+const SHEET_TAB = 'News';
+const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${SHEET_TAB}`;
+---
+
+<Layout
+  title="News | Neighbourhood Arts Albert-Eden"
+  description="News and updates from Neighbourhood Arts in Albert-Eden, Auckland."
+  keywords="Neighbourhood Arts, news, updates, Albert-Eden, Auckland, community arts news"
+  transparentHeader={true}
+>
+  <!-- Page Header -->
+  <section class="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+    <div class="hero-image-bg" style="background-image: url('/images/News_banner.jpg')"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="text-4xl lg:text-5xl font-bold mb-6">News</h1>
+      <p class="text-xl text-gray-200 max-w-2xl mx-auto">
+        Updates and stories from Neighbourhood Arts.
+      </p>
+    </div>
+  </section>
+
+  <!-- News Feed -->
+  <section class="py-16 lg:py-24 bg-cream">
+    <div class="container-custom">
+      <div id="news-status" class="text-center py-16 text-gray-500">
+        Loading news…
+      </div>
+      <div id="news-grid" class="hidden max-w-3xl mx-auto space-y-8"></div>
+      <div id="news-empty" class="hidden text-center py-16">
+        <p class="text-xl text-gray-500">No news yet.</p>
+        <p class="text-gray-400 mt-2">Check back soon for updates.</p>
+      </div>
+    </div>
+  </section>
+
+  <script define:vars={{ csvUrl }}>
+    function convertDriveUrl(url) {
+      if (!url) return '';
+      const trimmed = url.trim();
+      if (!trimmed) return '';
+      const idMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+      if (idMatch) return `https://lh3.googleusercontent.com/d/${idMatch[1]}`;
+      const fileMatch = trimmed.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+      if (fileMatch) return `https://lh3.googleusercontent.com/d/${fileMatch[1]}`;
+      return trimmed;
+    }
+
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let cell = '';
+      let inQuotes = false;
+      let i = 0;
+      while (i < text.length) {
+        const ch = text[i];
+        if (inQuotes) {
+          if (ch === '"') {
+            if (text[i + 1] === '"') { cell += '"'; i += 2; continue; }
+            inQuotes = false; i++; continue;
+          }
+          cell += ch; i++;
+        } else {
+          if (ch === '"') { inQuotes = true; i++; continue; }
+          if (ch === ',') { row.push(cell); cell = ''; i++; continue; }
+          if (ch === '\r' || ch === '\n') {
+            if (ch === '\r' && text[i + 1] === '\n') i++;
+            row.push(cell); rows.push(row); row = []; cell = ''; i++; continue;
+          }
+          cell += ch; i++;
+        }
+      }
+      if (cell !== '' || row.length > 0) { row.push(cell); rows.push(row); }
+      return rows;
+    }
+
+    function rowsToObjects(rows) {
+      if (!rows.length) return [];
+      const headers = rows[0].map(h => h.trim());
+      const objects = [];
+      for (let r = 1; r < rows.length; r++) {
+        const values = rows[r];
+        if (values.every(v => !v || !v.trim())) continue;
+        const obj = {};
+        headers.forEach((h, idx) => { obj[h] = (values[idx] ?? '').trim(); });
+        objects.push(obj);
+      }
+      return objects;
+    }
+
+    function escapeHTML(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function parseDate(value) {
+      if (!value) return null;
+      const trimmed = value.trim();
+      if (!trimmed) return null;
+      // GViz often emits "Date(YYYY,M,D)" - handle that too
+      const gvizMatch = trimmed.match(/^Date\((\d+),(\d+),(\d+)/);
+      if (gvizMatch) {
+        return new Date(Number(gvizMatch[1]), Number(gvizMatch[2]), Number(gvizMatch[3]));
+      }
+      const d = new Date(trimmed);
+      if (!isNaN(d.getTime())) return d;
+      // DD/MM/YYYY fallback
+      const slash = trimmed.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+      if (slash) {
+        return new Date(Number(slash[3]), Number(slash[2]) - 1, Number(slash[1]));
+      }
+      return null;
+    }
+
+    function formatDate(d) {
+      if (!d) return '';
+      return new Intl.DateTimeFormat('en-NZ', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }).format(d);
+    }
+
+    const grid = document.getElementById('news-grid');
+    const status = document.getElementById('news-status');
+    const empty = document.getElementById('news-empty');
+
+    function renderCard(item) {
+      const image = convertDriveUrl(item.Image_Final);
+      const date = parseDate(item.Date);
+      const dateLabel = formatDate(date);
+      const title = item.Title || '';
+      const content = item.Content || '';
+      const link = (item.External_Link || '').trim();
+
+      const imageBlock = image
+        ? `<div class="card-image"><img src="${escapeHTML(image)}" alt="${escapeHTML(title)}" loading="lazy" referrerpolicy="no-referrer" /></div>`
+        : '';
+
+      const linkBlock = link
+        ? `<a href="${escapeHTML(link)}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 mt-4 text-primary font-medium hover:gap-3 transition-all">
+            Read more
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>`
+        : '';
+
+      const dateBlock = dateLabel
+        ? `<time class="text-xs font-medium text-secondary uppercase tracking-wider">${escapeHTML(dateLabel)}</time>`
+        : '';
+
+      const titleBlock = title
+        ? `<h2 class="text-2xl font-medium mt-2 mb-3" style="font-family: 'Playfair Display', serif;">${escapeHTML(title)}</h2>`
+        : '';
+
+      const contentBlock = content
+        ? `<p class="text-slate leading-relaxed" style="white-space: pre-wrap;">${escapeHTML(content)}</p>`
+        : '';
+
+      const article = document.createElement('article');
+      article.className = 'bg-white shadow-sm hover:shadow-lg transition-shadow overflow-hidden';
+      article.innerHTML = `
+        ${imageBlock}
+        <div class="p-6 lg:p-8">
+          ${dateBlock}
+          ${titleBlock}
+          ${contentBlock}
+          ${linkBlock}
+        </div>
+      `;
+      return article;
+    }
+
+    fetch(csvUrl)
+      .then(r => {
+        if (!r.ok) throw new Error('Failed to load news');
+        return r.text();
+      })
+      .then(text => {
+        const rows = parseCSV(text);
+        const items = rowsToObjects(rows).filter(item =>
+          (item.Title && item.Title.trim()) ||
+          (item.Content && item.Content.trim())
+        );
+        items.sort((a, b) => {
+          const da = parseDate(a.Date);
+          const db = parseDate(b.Date);
+          const ta = da ? da.getTime() : 0;
+          const tb = db ? db.getTime() : 0;
+          return tb - ta;
+        });
+        status.classList.add('hidden');
+        if (!items.length) {
+          empty.classList.remove('hidden');
+          return;
+        }
+        grid.classList.remove('hidden');
+        items.forEach(item => grid.appendChild(renderCard(item)));
+      })
+      .catch(err => {
+        console.error(err);
+        status.textContent = 'Could not load news right now. Please try again later.';
+      });
+  </script>
+</Layout>

@@ -1,6 +1,5 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import ContactForm from '../components/ContactForm.astro';
 
 // Schema.org Organization
 const schema = {
@@ -44,10 +43,10 @@ const schema = {
 
   <!-- Hero -->
   <section class="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-    <div class="hero-image-bg" style="background-image: url('/images/project-1.jpg')"></div>
+    <div class="hero-image-bg" style="background-image: url('/images/About_banner.jpg')"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1 class="hero-title">About Us</h1>
+      <h1 class="text-4xl lg:text-5xl font-bold mb-6">About Us</h1>
       <p class="text-xl text-gray-200 max-w-2xl mx-auto">
         Supporting creative artists in Albert-Eden to produce and promote arts and culture events.
       </p>
@@ -67,15 +66,6 @@ const schema = {
     </div>
   </section>
 
-  <!-- Image Break -->
-  <section class="py-0">
-    <img
-      src="/images/project-3.jpg"
-      alt="Community arts event in Albert-Eden, Auckland showing local musicians performing at outdoor venue"
-      class="w-full h-[400px] object-cover"
-    />
-  </section>
-
   <!-- How it works -->
   <section class="section-padding bg-cream">
     <div class="container-narrow">
@@ -89,15 +79,15 @@ const schema = {
           </p>
         </div>
         <div class="bg-white p-8">
-          <h3 class="text-xl font-medium mb-4" style="font-family: 'Playfair Display', serif;">THE KŌRERO 🗣️</h3>
+          <h3 class="text-xl font-medium mb-4" style="font-family: 'Playfair Display', serif;">THE SUPPORT 🤝</h3>
           <p class="text-slate leading-relaxed">
-            Connect with our Arts Broker to refine your plan and find local connections.
+            Apply for funding (July-Aug), access advice, and guidance with council processes.
           </p>
         </div>
         <div class="bg-white p-8">
-          <h3 class="text-xl font-medium mb-4" style="font-family: 'Playfair Display', serif;">THE SUPPORT 🤝</h3>
+          <h3 class="text-xl font-medium mb-4" style="font-family: 'Playfair Display', serif;">THE KŌRERO 🗣️</h3>
           <p class="text-slate leading-relaxed">
-            Apply for funding (July-Aug), access advice, and help with council processes.
+            Connect with our Arts Broker to refine your plan and find local connections.
           </p>
         </div>
         <div class="bg-white p-8">
@@ -124,15 +114,9 @@ const schema = {
         <li class="flex items-start gap-3"><span class="text-secondary mt-1">—</span>Create moments of surprise and discovery</li>
         <li class="flex items-start gap-3"><span class="text-secondary mt-1">—</span>Activate spaces not usually used for the arts</li>
       </ul>
-      <p class="text-slate leading-relaxed mb-12">
+      <p class="text-slate leading-relaxed">
         These include exhibitions, performances, festivals, creative workshops, or public installations—anything that helps tell local stories, engage new audiences, and bring neighbourhood spaces to life.
       </p>
-      <div class="divider"></div>
-      <h2 class="section-title mb-8">Got an idea?</h2>
-      <p class="text-lg text-slate mb-10 leading-relaxed">
-        Get in touch — we'd love to hear about it!
-      </p>
-      <ContactForm />
     </div>
   </section>
 
@@ -145,15 +129,6 @@ const schema = {
         <p class="text-lg leading-relaxed">
           Funding for Neighbourhood Arts comes from the Albert-Eden Local Board and opens for applications in July / August every year. This is announced via our social media channels. Our Arts Broker is available year-round to discuss your ideas, offer advice, and help refine your proposal - so get in touch early if you're planning a project.
         </p>
-      </div>
-
-      <div class="flex flex-col sm:flex-row gap-4 mt-8">
-        <a href="#contact" class="btn-outline">
-          ARTS APPLICATION
-        </a>
-        <a href="#contact" class="btn-outline">
-          EVENTS APPLICATION
-        </a>
       </div>
 
       <div class="mt-8 p-6 bg-white/10 rounded-lg">
@@ -172,7 +147,7 @@ const schema = {
             <p class="leading-relaxed mb-3">
               The Albert Eden Local Board provides several other grants for events and projects within our community.
             </p>
-            <a href="https://www.aucklandcouncil.govt.nz/grants-community-support-housing/grants-funding/Pages/default.aspx" target="_blank" rel="noopener noreferrer" class="text-secondary hover:text-white transition-colors">
+            <a href="https://www.aucklandcouncil.govt.nz/en/grants-community-support-housing/grants/local-board-grants/albert-eden-local-board-grants.html" target="_blank" rel="noopener noreferrer" class="text-secondary hover:text-white transition-colors">
               Information on these grants can be accessed here →
             </a>
           </div>
@@ -182,7 +157,7 @@ const schema = {
             <p class="leading-relaxed mb-3">
               The CCS is an Auckland region wide grant that comes from Creative NZ and is delivered in partnership with Auckland Council.
             </p>
-            <a href="https://www.aucklandcouncil.govt.nz/grants-community-support-housing/grants-funding/Pages/creative-communities-scheme.aspx" target="_blank" rel="noopener noreferrer" class="text-secondary hover:text-white transition-colors">
+            <a href="https://www.aucklandcouncil.govt.nz/en/grants-community-support-housing/grants/grants-calendar/creative-communities-scheme.html" target="_blank" rel="noopener noreferrer" class="text-secondary hover:text-white transition-colors">
               Information and dates for the CCS can be accessed here →
             </a>
           </div>
@@ -192,8 +167,8 @@ const schema = {
       <div class="mt-12 flex items-center gap-8">
         <img
           src="/images/albert-eden-logo.png"
-          alt="Albert-Eden Local Board - Proudly Supported By"
-          class="h-20"
+          alt="Albert-Eden Local Board"
+          class="h-36 lg:h-44"
         />
       </div>
     </div>

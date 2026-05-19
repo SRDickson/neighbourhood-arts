@@ -12,10 +12,12 @@ const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=o
   keywords="community arts projects, Albert-Eden, Auckland, arts initiatives, creative projects, Neighbourhood Arts"
 >
   <!-- Page Header -->
-  <section class="bg-gray-900 text-white pt-40 lg:pt-48 pb-20 lg:pb-28">
-    <div class="container-custom text-center">
+  <section class="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
+    <div class="hero-image-bg" style="background-image: url('/images/Projects_banner.jpg')"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
       <h1 class="text-4xl lg:text-5xl font-bold mb-6">Projects</h1>
-      <p class="text-xl text-gray-300 max-w-2xl mx-auto">
+      <p class="text-xl text-gray-200 max-w-2xl mx-auto">
         Explore the creative projects we've supported across Albert-Eden.
       </p>
     </div>
@@ -190,8 +192,7 @@ const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=o
             <img src="${escapeHTML(hero)}" alt="${escapeHTML(name)}" loading="lazy" referrerpolicy="no-referrer" />
           </div>
           <div class="p-6">
-            ${p.Year ? `<span class="text-xs font-medium text-secondary uppercase tracking-wider">${escapeHTML(p.Year)}</span>` : ''}
-            <h3 class="text-xl font-medium mt-2 group-hover:text-primary transition-colors" style="font-family: 'Playfair Display', serif;">
+            <h3 class="text-xl font-medium group-hover:text-primary transition-colors" style="font-family: 'Playfair Display', serif;">
               ${escapeHTML(name)}
             </h3>
           </div>

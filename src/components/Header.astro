@@ -32,7 +32,7 @@ function isActive(path: string) {
         <img
           src="/images/neighbourhood-arts-logo.png"
           alt="Neighbourhood Arts"
-          class="h-28 lg:h-40 w-auto logo-img"
+          class="h-32 lg:h-44 w-auto logo-img"
         />
       </a>
 
@@ -67,10 +67,22 @@ function isActive(path: string) {
         </a>
 
         <a
-          href="/press"
-          class={`nav-link ${isActive('/press') ? 'active' : ''}`}
+          href="/news"
+          class={`nav-link ${isActive('/news') ? 'active' : ''}`}
         >
-          Press
+          News
+        </a>
+
+        <a
+          href="https://www.facebook.com/neighbourhoodarts/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="nav-social"
+          aria-label="Neighbourhood Arts on Facebook"
+        >
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+          </svg>
         </a>
 
         <a
@@ -102,7 +114,7 @@ function isActive(path: string) {
       <a href="/projects" class="block py-2 text-charcoal hover:text-primary font-medium">Projects</a>
       <a href="/directory" class="block py-2 text-charcoal hover:text-primary font-medium">Directory</a>
 
-      <a href="/press" class="block py-2 text-charcoal hover:text-primary font-medium">Press</a>
+      <a href="/news" class="block py-2 text-charcoal hover:text-primary font-medium">News</a>
 
       <div class="pt-4">
         <a href="/about#contact" class="btn-primary w-full text-center">Contact</a>
@@ -117,12 +129,14 @@ function isActive(path: string) {
   }
 
   .header-transparent .nav-link,
-  .header-transparent .menu-btn {
+  .header-transparent .menu-btn,
+  .header-transparent .nav-social {
     color: white;
   }
 
   .header-transparent .nav-link:hover,
-  .header-transparent .nav-link.active {
+  .header-transparent .nav-link.active,
+  .header-transparent .nav-social:hover {
     color: rgba(255, 255, 255, 0.7);
   }
 
@@ -136,13 +150,22 @@ function isActive(path: string) {
   }
 
   .header-solid .nav-link,
-  .header-solid .menu-btn {
+  .header-solid .menu-btn,
+  .header-solid .nav-social {
     color: var(--color-charcoal);
   }
 
   .header-solid .nav-link:hover,
-  .header-solid .nav-link.active {
+  .header-solid .nav-link.active,
+  .header-solid .nav-social:hover {
     color: var(--color-primary);
+  }
+
+  .nav-social {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
   }
 
   .header-solid .logo-img {
@@ -155,12 +178,14 @@ function isActive(path: string) {
   }
 
   .header-scrolled .nav-link,
-  .header-scrolled .menu-btn {
+  .header-scrolled .menu-btn,
+  .header-scrolled .nav-social {
     color: var(--color-charcoal) !important;
   }
 
   .header-scrolled .nav-link:hover,
-  .header-scrolled .nav-link.active {
+  .header-scrolled .nav-link.active,
+  .header-scrolled .nav-social:hover {
     color: var(--color-primary) !important;
   }
 

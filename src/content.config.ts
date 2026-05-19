@@ -32,15 +32,4 @@ const directory = defineCollection({
   }),
 });
 
-const press = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/press" }),
-  schema: z.object({
-    title: z.string(),
-    date: z.date(),
-    summary: z.string(),
-    externalUrl: z.string().optional(),
-    draft: z.boolean().optional().default(false),
-  }),
-});
-
-export const collections = { projects, directory, press };
+export const collections = { projects, directory };
