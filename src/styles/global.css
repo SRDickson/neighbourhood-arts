@@ -78,12 +78,13 @@ h1, h2, h3 {
 }
 
 .btn-hero {
-  @apply inline-flex items-center justify-center px-10 py-5 text-base lg:text-lg font-bold tracking-wider uppercase;
+  @apply inline-flex items-center justify-center px-12 py-6 text-lg lg:text-2xl tracking-wider uppercase;
   background-color: transparent;
   color: var(--color-secondary);
-  border: 2px solid var(--color-secondary);
+  border: 3px solid var(--color-secondary);
   transition: all 0.3s ease;
   letter-spacing: 0.1em;
+  font-weight: 900;
 }
 
 .btn-hero:hover {
@@ -160,12 +161,9 @@ h1, h2, h3 {
 }
 
 .hero-subtitle {
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  font-weight: 300;
-  opacity: 0.9;
-  max-width: 600px;
+  max-width: 900px;
   margin: 0 auto 2.5rem;
-  line-height: 1.8;
+  line-height: 1.1;
 }
 
 /* Scroll indicator */
