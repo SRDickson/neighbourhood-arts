@@ -133,8 +133,16 @@ const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=o
     const status = document.getElementById('news-status');
     const empty = document.getElementById('news-empty');
 
+    function isLikelyImageUrl(url) {
+      if (!url) return false;
+      const trimmed = url.trim();
+      if (!trimmed) return false;
+      return /^https?:\/\//i.test(trimmed) || trimmed.startsWith('/');
+    }
+
     function renderCard(item) {
-      const image = convertDriveUrl(item.Image_Final);
+      const rawImage = convertDriveUrl(item.Image_Final);
+      const image = isLikelyImageUrl(rawImage) ? rawImage : '';
       const date = parseDate(item.Date);
       const dateLabel = formatDate(date);
       const title = item.Title || '';
@@ -142,7 +150,7 @@ const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=o
       const link = (item.External_Link || '').trim();
 
       const imageBlock = image
-        ? `<div class="card-image"><img src="${escapeHTML(image)}" alt="${escapeHTML(title)}" loading="lazy" referrerpolicy="no-referrer" /></div>`
+        ? `<div class="card-image"><img src="${escapeHTML(image)}" alt="${escapeHTML(title)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.remove()" /></div>`
         : '';
 
       const linkBlock = link
