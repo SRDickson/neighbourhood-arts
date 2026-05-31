@@ -26,6 +26,8 @@ const directory = defineCollection({
     instagram: z.string().optional(),
     facebook: z.string().optional(),
     specialties: z.array(z.string()).optional(),
+    discipline: z.array(z.string()).optional(),
+    gallery: z.array(z.string()).optional(),
     altText: z.string().optional(),
     verified: z.boolean().optional().default(false),
     draft: z.boolean().optional().default(false),

@@ -6,7 +6,9 @@ email: ""
 website: "https://bookings.aucklandcouncil.govt.nz/facilities/facility/sandringham-community-centre"
 instagram: ""
 specialties: ["Venue"]
+discipline: []
 thumbnail: "https://lh3.googleusercontent.com/d/1tEtYq2UXErM55iPfSIa7toFnkGkqqZl3"
+gallery: []
 altText: "Sandringham Community Centre"
 verified: true
 draft: false

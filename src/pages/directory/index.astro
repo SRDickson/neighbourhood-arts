@@ -63,11 +63,13 @@ const allEntries = await getCollection('directory', ({ data }) => !data.draft);
               <DirectoryCard
                 name={entry.data.name}
                 category={entry.data.category}
+                slug={entry.id}
                 thumbnail={entry.data.thumbnail}
                 description={entry.data.description}
                 website={entry.data.website}
                 instagram={entry.data.instagram}
                 facebook={entry.data.facebook}
+                discipline={entry.data.discipline}
               />
             </div>
           ))}

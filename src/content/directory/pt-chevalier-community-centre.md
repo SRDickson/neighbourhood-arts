@@ -6,7 +6,9 @@ email: ""
 website: "https://bookings.aucklandcouncil.govt.nz/facilities/facility/pt-chevalier-community-centre"
 instagram: ""
 specialties: ["Venue"]
+discipline: []
 thumbnail: "https://lh3.googleusercontent.com/d/1uhwoY3CCM_cYmNzEhbxstqCRUPXHcJ-P"
+gallery: []
 altText: "Pt Chevalier Community Centre"
 verified: true
 draft: false

@@ -2,6 +2,7 @@
 interface Props {
   name: string;
   category: string;
+  slug: string;
   thumbnail?: string;
   description: string;
   website?: string;
@@ -9,19 +10,24 @@ interface Props {
   facebook?: string;
   email?: string;
   specialties?: string[];
+  discipline?: string[];
 }
 
 const {
   name,
   category,
+  slug,
   thumbnail,
   description,
   website,
   instagram,
   facebook,
   email,
-  specialties = []
+  specialties = [],
+  discipline = []
 } = Astro.props;
+
+const detailHref = `/directory/${category}/${slug}`;
 
 const hasLinks = website || instagram || facebook;
 const placeholderImage = '/images/placeholder-profile.jpg';
@@ -70,8 +76,13 @@ if (category === 'venues') {
 }
 ---
 
-<article class="bg-white rounded-lg overflow-hidden shadow-md card-hover flex flex-col flex-1" itemscope itemtype={category === 'venues' ? 'https://schema.org/LocalBusiness' : category === 'organisations' ? 'https://schema.org/Organization' : 'https://schema.org/Person'}>
+<article class="relative bg-white rounded-lg overflow-hidden shadow-md card-hover flex flex-col flex-1" itemscope itemtype={category === 'venues' ? 'https://schema.org/LocalBusiness' : category === 'organisations' ? 'https://schema.org/Organization' : 'https://schema.org/Person'}>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  <a
+    href={detailHref}
+    class="absolute inset-0 z-0"
+    aria-label={`View ${name}'s profile`}
+  ></a>
   <div class="aspect-square overflow-hidden bg-gray-100 shrink-0">
     <img
       src={thumbnail || placeholderImage}
@@ -83,10 +94,18 @@ if (category === 'venues') {
   </div>
   <div class="p-5 flex flex-col flex-1">
     <h3 class="text-lg font-semibold text-gray-900 mb-1">{name}</h3>
-    <p class="text-gray-600 text-sm mb-4 line-clamp-3">{description}</p>
+    {discipline.length > 0 && (
+      <div class="flex flex-wrap gap-1.5 mb-4">
+        {discipline.slice(0, 4).map((tag) => (
+          <span class="inline-block bg-gray-100 text-gray-700 text-xs font-medium px-2 py-0.5 rounded-full">
+            {tag}
+          </span>
+        ))}
+      </div>
+    )}
 
     {hasLinks && (
-      <div class="flex items-center gap-3 mt-auto">
+      <div class="relative z-10 flex items-center gap-3 mt-auto">
         {website && (
           <a
             href={website}

@@ -59,8 +59,8 @@ function parseCSV(csv) {
 
 function convertDriveUrl(url) {
   if (!url) return '';
-  const match = url.match(/[?&]id=([^&]+)/);
-  if (match) return `https://lh3.googleusercontent.com/d/${match[1]}`;
+  const idMatch = url.match(/[?&]id=([^&]+)/) || url.match(/\/file\/d\/([^/]+)/);
+  if (idMatch) return `https://lh3.googleusercontent.com/d/${idMatch[1]}`;
   return url;
 }
 
@@ -80,24 +80,25 @@ function createSlug(name) {
     .replace(/^-+|-+$/g, '');
 }
 
+function splitList(value) {
+  if (!value) return [];
+  return value.split(',').map(s => s.trim()).filter(Boolean);
+}
+
 function createMarkdownFile(entry) {
   const name = entry['Name']?.trim();
   if (!name) return;
 
-  const approved = entry['Approved']?.toUpperCase() === 'Y';
-  if (!approved) {
-    console.log(`⏭️  Skipping ${name} (not approved)`);
-    return;
-  }
-
   const slug = createSlug(name);
-  const specialties = entry['Specialties']
-    ? entry['Specialties'].split(',').map(s => s.trim()).filter(Boolean)
-    : [];
+  const specialties = splitList(entry['Specialties']);
+  const discipline = splitList(entry['Discipline']);
   const category = categoryFromSpecialties(entry['Specialties'] || '');
 
   const bio = (entry['Bio'] || '').replace(/"/g, '\\"');
-  const thumbnail = convertDriveUrl(entry['DirectPhotoURL']?.trim()) || '/images/placeholder-profile.jpg';
+  const thumbnail = convertDriveUrl(entry['Hero Final']?.trim()) || '/images/placeholder-profile.jpg';
+  const gallery = ['G1 final', 'G2 final', 'G3 final']
+    .map(col => convertDriveUrl(entry[col]?.trim()))
+    .filter(Boolean);
   const social = entry['Instagram / Facebook'] || '';
 
   const markdown = `---
@@ -108,7 +109,9 @@ email: "${entry['Email Address'] || ''}"
 website: "${entry['Website'] || ''}"
 instagram: "${social}"
 specialties: ${JSON.stringify(specialties)}
+discipline: ${JSON.stringify(discipline)}
 thumbnail: "${thumbnail}"
+gallery: ${JSON.stringify(gallery)}
 altText: "${name.replace(/"/g, '\\"')}"
 verified: true
 draft: false
@@ -136,7 +139,7 @@ async function syncDirectory() {
   });
   console.log('🗑️  Cleared old directory files\n');
 
-  console.log('📥 Fetching mastersheet...');
+  console.log('📥 Fetching MasterFeed...');
 
   try {
     const csvData = await fetchCSV(CSV_URL);

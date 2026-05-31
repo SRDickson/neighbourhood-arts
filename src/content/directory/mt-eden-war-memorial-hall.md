@@ -6,7 +6,9 @@ email: ""
 website: "https://bookings.aucklandcouncil.govt.nz/facilities/facility/mt-eden-war-memorial-hall"
 instagram: ""
 specialties: ["Venue"]
+discipline: []
 thumbnail: "https://lh3.googleusercontent.com/d/1K0oHc2Bz1708QGZRXnveS5JXbxKNb5Lv"
+gallery: []
 altText: "Mt Eden War Memorial Hall"
 verified: true
 draft: false

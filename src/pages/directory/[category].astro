@@ -65,15 +65,6 @@ const { entries, info, allCategories } = Astro.props;
   <!-- Page Header -->
   <section class="bg-gray-900 text-white py-20 lg:py-28">
     <div class="container-custom text-center">
-      <a
-        href="/directory"
-        class="inline-flex items-center text-gray-400 hover:text-white mb-4 transition-colors"
-      >
-        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        Back to Directory
-      </a>
       <h1 class="text-4xl lg:text-5xl font-bold mb-6">{info.name}</h1>
       <p class="text-xl text-gray-300 max-w-2xl mx-auto">
         {info.description}
@@ -85,6 +76,12 @@ const { entries, info, allCategories } = Astro.props;
   <nav class="bg-gray-100 py-4" aria-label="Directory categories">
     <div class="container-custom">
       <div class="flex flex-wrap justify-center gap-4">
+        <a
+          href="/directory"
+          class="px-6 py-2 rounded-full font-medium transition-colors bg-white text-gray-700 hover:bg-gray-200"
+        >
+          All
+        </a>
         {allCategories.map((cat: { slug: string; name: string }) => (
           <a
             href={`/directory/${cat.slug}`}
@@ -110,11 +107,13 @@ const { entries, info, allCategories } = Astro.props;
             <DirectoryCard
               name={entry.data.name}
               category={entry.data.category}
+              slug={entry.id}
               thumbnail={entry.data.thumbnail}
               description={entry.data.description}
               website={entry.data.website}
               instagram={entry.data.instagram}
               facebook={entry.data.facebook}
+              discipline={entry.data.discipline}
             />
           ))}
         </div>
