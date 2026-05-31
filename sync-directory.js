@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import https from 'https';
 
-const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRNVmW6hjAspHGHbwFUCZEvz6bwoDva46Alf7lsqj7hgOeoX4qXREP7rRangm6nnrR7om2sFD-2P5Ei/pub?gid=1814063400&single=true&output=csv';
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/1esSgeY0bj-BzKG3BbDQV9YnQXz3Yrb3fsQxfHXqj4ek/export?format=csv&gid=1814063400';
 
 const CONTENT_DIR = './src/content/directory';
 
